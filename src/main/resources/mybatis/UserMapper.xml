@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zjj.dao.UserDao">
+
+    <!-- Cache 配置 -->
+    <cache
+        eviction="FIFO"
+        flushInterval="600000"
+        size="512"
+        readOnly="true" />
+
+<!-- <cache/> -->
+
+	<!--批量插入excel表格数据 -->
+	<insert id="insertDate" parameterType="java.util.List">
+		<selectKey resultType="java.lang.Integer" keyProperty="id"
+			order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		insert into sys_excel
+		(sys_column1, sys_column2, sys_column3,id,create_date,create_user)
+		values
+		<foreach collection="list" item="reddemCode" index="index"
+			separator=",">
+			(
+			MD5(ucase(#{reddemCode.column0})), MD5(ucase(#{reddemCode.column1})),
+			#{reddemCode.column2},#{reddemCode.id},now(),#{reddemCode.createUser}
+			)
+		</foreach>
+	</insert>
+
+
+
+	<select id="getData" resultType="string">
+		select distinct sys_column3 from sys_excel
+		where sys_column1 = #{column1} and sys_column2 = #{column2}
+	</select>
+	
+	<select id="queryPassword" resultType="string">
+		select user_password from sys_user_password
+		where user_name = #{userName} 
+	</select>
+
+</mapper>
+
+
+
+

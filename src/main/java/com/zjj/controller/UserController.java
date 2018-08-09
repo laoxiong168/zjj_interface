@@ -100,13 +100,6 @@ public class UserController {
 	
 	
 	
-	@RequestMapping(value="/ems")
-	@ResponseBody
-	public Map<String, Object> emsInf(HttpServletRequest request){
-		System.out.println("获取到的test的值："+request.getParameter("test"));
-		return null;
-		
-	}
 
 	/**
 	 * 有界面的用户查询数据
